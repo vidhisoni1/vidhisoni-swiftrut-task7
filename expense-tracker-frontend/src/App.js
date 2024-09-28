@@ -1,21 +1,50 @@
 import React from 'react';
-import GlobalStyle from './styles/GlobalStyles';
-import { ExpenseProvider } from './context/ExpenseContext';
-import ExpenseForm from './components/ExpenseForm';
-import ExpenseList from './components/ExpenseList';
-import Charts from './components/Charts';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import AddExpense from './pages/AddExpense';
+import Statistics from './pages/Statistics';
+import Register from './pages/Register';
+import Login from './components/Login';
+import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
-    <ExpenseProvider>
-      <GlobalStyle />
-      <div className="container">
-        <h1>Expense Tracker</h1>
-        <ExpenseForm />
-        <ExpenseList />
-        <Charts />
-      </div>
-    </ExpenseProvider>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Protected Routes */}
+        <Route 
+          path="/" 
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/add-expense" 
+          element={
+            <PrivateRoute>
+              <AddExpense />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/statistics" 
+          element={
+            <PrivateRoute>
+              <Statistics />
+            </PrivateRoute>
+          } 
+        />
+      </Routes>
+    </Router>
   );
 }
 
